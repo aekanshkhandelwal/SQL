@@ -1,7 +1,9 @@
-select distinct l1.num as ConsecutiveNums 
-from 
-Logs l1 
-join Logs l2
-on abs(l1.id-l2.id)=1
-and l1.num=l2.num
-group by l1.ID,l1.num having count(*)>=2
+# Write your MySQL query statement below
+select distinct num as ConsecutiveNums
+from(
+    select num,
+    lag(num,1) over (order by id) as p1,
+    lag(num,2) over (order by id) as p2
+    from Logs
+) t
+where num = p1 and num = p2
